@@ -3,4 +3,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="notlyPurple">#6C4CCF</color>
+    <color name="resultCorrectBg">#C6F6D5</color>      <!-- soft green -->
+    <color name="resultCorrectText">#22543D</color>
+
+    <color name="resultWrongBg">#FED7D7</color>       <!-- soft red -->
+    <color name="resultWrongText">#742A2A</color>
+
+    <color name="resultOptionNeutralBg">#F7FAFC</color> <!-- very light gray/blue -->
+    <color name="resultOptionNeutralText">#222222</color>
+
+    <color name="resultQuestionCardBg">#FFFFFFFF</color>
+    <color name="resultQuestionCardBorder">#E2E8F0</color>
+
 </resources>
