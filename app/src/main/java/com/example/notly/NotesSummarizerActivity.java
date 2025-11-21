@@ -14,7 +14,7 @@ public class NotesSummarizerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes_summarizer); // ✅ link XML
+        setContentView(R.layout.activity_notes_summarizer);
 
         etNotes = findViewById(R.id.etNotes);
         btnBrowse = findViewById(R.id.btnBrowse);

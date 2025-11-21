@@ -20,13 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".NotesSummarizerActivity" /> <!-- ✅ ADD THIS -->
-
         <activity android:name=".GenerateQuizActivity" />
         <activity android:name=".ExamActivity" />
         <activity android:name=".ExamResultActivity" />
         <activity android:name=".HistoryActivity" />
+        <activity android:name=".NotesSummarizerActivity"/>
 
     </application>
 
