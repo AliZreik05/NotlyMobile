@@ -1,19 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:title="Home"
+        android:icon="@drawable/ic_home"/>
+
     <item
         android:id="@+id/nav_generate"
-        android:icon="@drawable/ic_generate"
-        android:title="Generate" />
+        android:title="Generate"
+        android:icon="@drawable/ic_generate"/>
+
     <item
         android:id="@+id/nav_history"
-        android:icon="@drawable/ic_history"
-        android:title="History" />
+        android:title="History"
+        android:icon="@drawable/ic_history"/>
+
     <item
         android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_profile"
-        android:title="Profile" />
+        android:title="Profile"
+        android:icon="@drawable/ic_profile"/>
+
 </menu>

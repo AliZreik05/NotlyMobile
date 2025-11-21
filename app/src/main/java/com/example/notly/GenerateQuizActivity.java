@@ -1,4 +1,4 @@
-package com.example.notly;   // change to your package
+package com.example.notly;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +41,22 @@ public class GenerateQuizActivity extends AppCompatActivity {
             for (Lecture lec : allLectures) {
                 if (lec.isSelected()) count++;
             }
-            Toast.makeText(this,
-                    "Generate quiz from " + count + " lecture(s)",
-                    Toast.LENGTH_SHORT).show();
+            if (count == 0) {
+                Toast.makeText(this, "Select at least one lecture", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this,
+                        "Generate quiz from " + count + " lecture(s)",
+                        Toast.LENGTH_SHORT).show();
+                // Later: start ExamActivity
+            }
         });
+
+        // Setup quiz bottom navigation
+        BottomNavigationView bottomNav = findViewById(R.id.quizBottomNav);
+        QuizNavUtils.setupQuizBottomNav(bottomNav, this, R.id.nav_generate);
     }
 
     private void initData() {
-        // dummy data for now
         for (int i = 1; i <= 12; i++) {
             allLectures.add(new Lecture("Lecture " + i));
         }

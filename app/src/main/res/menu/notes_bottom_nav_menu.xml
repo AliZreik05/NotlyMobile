@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_notes_generate"
+        android:title="Generate"
+        android:icon="@drawable/ic_generate" />
+
+    <item
+        android:id="@+id/nav_notes_list"
+        android:title="My Notes"
+        android:icon="@drawable/ic_notes" />
+
+    <item
+        android:id="@+id/nav_notes_profile"
+        android:title="Profile"
+        android:icon="@drawable/ic_profile" />
+
+</menu>

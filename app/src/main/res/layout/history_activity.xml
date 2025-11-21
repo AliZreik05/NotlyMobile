@@ -6,9 +6,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="#F5F0F8"
+    tools:context=".HistoryActivity">
 
-    <!-- Top Notly bar (same as other screens) -->
+    <!-- Top bar, same as other Notly screens -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
@@ -53,7 +55,7 @@
             android:contentDescription="@string/profile" />
     </LinearLayout>
 
-    <!-- Small title under toolbar -->
+    <!-- Page title -->
     <TextView
         android:id="@+id/historyTitleTextView"
         android:layout_width="0dp"
@@ -69,7 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- RecyclerView with past exams -->
+    <!-- History list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyRecyclerView"
         android:layout_width="0dp"
@@ -78,23 +80,30 @@
         android:paddingBottom="8dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/historyTitleTextView"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintBottom_toTopOf="@id/bottomSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/history_quiz_item" />
 
-    <!-- Bottom navigation (same menu) -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+    <!-- Bottom section: ONLY quiz nav, same as GenerateQuizActivity -->
+    <LinearLayout
+        android:id="@+id/bottomSection"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@android:color/white"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@color/bottom_nav_selector"
-        app:itemTextColor="@color/bottom_nav_selector"
-        app:labelVisibilityMode="labeled"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/quizBottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            app:menu="@menu/quiz_bottom_nav_menu"
+            app:itemIconTint="@color/bottom_nav_selector"
+            app:itemTextColor="@color/bottom_nav_selector"
+            app:labelVisibilityMode="labeled" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

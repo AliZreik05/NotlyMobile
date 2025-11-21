@@ -14,5 +14,6 @@
 
     <color name="resultQuestionCardBg">#FFFFFFFF</color>
     <color name="resultQuestionCardBorder">#E2E8F0</color>
+    <color name="notlyBackground">#F6F2FA</color>
 
 </resources>

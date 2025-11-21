@@ -25,6 +25,9 @@
         <activity android:name=".ExamResultActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".NotesSummarizerActivity"/>
+        <activity android:name=".HomeActivity"/>
+        <activity android:name=".NotesListActivity"/>
+
 
     </application>
 

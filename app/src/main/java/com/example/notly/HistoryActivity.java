@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,18 +23,16 @@ public class HistoryActivity extends AppCompatActivity {
         historyRecyclerView = findViewById(R.id.historyRecyclerView);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Use the renamed model
         List<QuizHistory> items = buildDummyHistory();
 
-        // Use the renamed adapter
         QuizHistoryAdapter adapter = new QuizHistoryAdapter(items, quiz -> {
-            // TODO: open detailed quiz results from stored history
-            // Example:
-            // Intent intent = new Intent(this, ExamResultActivity.class);
-            // startActivity(intent);
+            // Later: open ExamResultActivity for this quiz
         });
 
         historyRecyclerView.setAdapter(adapter);
+
+        BottomNavigationView bottomNav = findViewById(R.id.quizBottomNav);
+        QuizNavUtils.setupQuizBottomNav(bottomNav, this, R.id.nav_quiz_history);
     }
 
     private List<QuizHistory> buildDummyHistory() {

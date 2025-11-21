@@ -5,6 +5,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 public class NotesSummarizerActivity extends AppCompatActivity {
 
@@ -31,5 +33,8 @@ public class NotesSummarizerActivity extends AppCompatActivity {
                 Toast.makeText(this, "Generating summary...", Toast.LENGTH_SHORT).show();
             }
         });
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
+        NotesNavUtils.setupNotesBottomNav(bottomNav, this, R.id.nav_notes_generate);
+
     }
 }
