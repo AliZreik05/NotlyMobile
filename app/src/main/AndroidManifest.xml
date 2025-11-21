@@ -11,19 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Notly">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GenerateQuizActivity"></activity>
-        <activity android:name=".ExamActivity"></activity>
-        <activity android:name=".ExamResultActivity"></activity>
-        <activity android:name=".HistoryActivity"></activity>
+
+        <activity android:name=".NotesSummarizerActivity" /> <!-- ✅ ADD THIS -->
+
+        <activity android:name=".GenerateQuizActivity" />
+        <activity android:name=".ExamActivity" />
+        <activity android:name=".ExamResultActivity" />
+        <activity android:name=".HistoryActivity" />
+
     </application>
 
 </manifest>
