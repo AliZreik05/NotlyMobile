@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/result_question_background"
+    android:padding="12dp">
+
+    <!-- Avatar with course/lecture initial -->
+    <TextView
+        android:id="@+id/historyAvatarTextView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/circle_avatar"
+        android:gravity="center"
+        android:text="B"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Quiz title -->
+    <TextView
+        android:id="@+id/historyTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="Biology – Week 3 Quiz"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toEndOf="@id/historyAvatarTextView"
+        app:layout_constraintTop_toTopOf="@id/historyAvatarTextView"
+        app:layout_constraintEnd_toStartOf="@id/historyStatusChip" />
+
+    <!-- Score + date line -->
+    <TextView
+        android:id="@+id/historySubtitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:text="Score: 8 / 10 • Nov 20, 2025"
+        android:textSize="13sp"
+        android:textColor="#666666"
+        app:layout_constraintStart_toEndOf="@id/historyAvatarTextView"
+        app:layout_constraintTop_toBottomOf="@id/historyTitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/historyStatusChip" />
+
+    <!-- Status pill (Passed / Failed) -->
+    <TextView
+        android:id="@+id/historyStatusChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:text="Passed"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/resultCorrectText"
+        android:background="@drawable/history_status_chip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/historyAvatarTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
