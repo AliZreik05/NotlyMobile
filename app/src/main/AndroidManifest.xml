@@ -20,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FlashcardGeneratorActivity"
+            android:exported="false" />
         <activity android:name=".GenerateQuizActivity" />
         <activity android:name=".ExamActivity" />
         <activity android:name=".ExamResultActivity" />
