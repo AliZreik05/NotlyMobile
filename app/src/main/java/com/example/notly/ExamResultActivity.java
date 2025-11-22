@@ -35,13 +35,18 @@ public class ExamResultActivity extends AppCompatActivity {
 
         resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // TODO: later, get this from Intent extras
-        List<ExamResultQuestion> questions = buildDummyResults();
+// Get data from Intent
+        List<ExamResultQuestion> questions =
+                (List<ExamResultQuestion>) getIntent().getSerializableExtra("result_questions");
+
+        if (questions == null || questions.isEmpty()) {
+            questions = buildDummyResults(); // optional fallback or remove
+        }
 
         adapter = new ExamResultQuestionAdapter(questions);
         resultsRecyclerView.setAdapter(adapter);
 
-        // compute score from data
+// compute score
         int total = questions.size();
         int correct = 0;
         for (ExamResultQuestion q : questions) {
@@ -53,13 +58,11 @@ public class ExamResultActivity extends AppCompatActivity {
         scoreObtainedTextView.setText(String.valueOf(correct));
         scoreTotalTextView.setText(String.valueOf(total));
 
-        // Return to home
         returnBar.setOnClickListener(v -> {
-            // For now: finish and go back, or open your HomeActivity
             finish();
-            // or:
-            // startActivity(new Intent(this, HomeActivity.class));
+            // or open HomeActivity if you prefer
         });
+
     }
 
     private List<ExamResultQuestion> buildDummyResults() {

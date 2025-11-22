@@ -1,17 +1,15 @@
-package com.example.notly; // use your package
+package com.example.notly;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ExamResultQuestion {
+public class ExamResultQuestion implements Serializable {
 
     private String title;
     private String description;
     private List<String> options;
 
-    // index of correct option (0,1,2)
     private int correctIndex;
-
-    // index the user selected (-1 if unanswered)
     private int selectedIndex;
 
     public ExamResultQuestion(String title,
