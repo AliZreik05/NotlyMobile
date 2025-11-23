@@ -23,7 +23,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);  // make sure this matches your XML file name
 
-        authApi = RetrofitAPI.getClient().create(AuthApi.class);
+        authApi = RetrofitAPI.getAuthApi();
+
 
         EditText emailEt    = findViewById(R.id.Email);
         EditText passwordEt = findViewById(R.id.Password);

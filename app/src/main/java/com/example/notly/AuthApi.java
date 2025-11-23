@@ -8,6 +8,8 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Path;
+
 
 public interface AuthApi {
     @GET("lectures/")
@@ -16,11 +18,29 @@ public interface AuthApi {
     Call<SignUpResponse> signUp(@Body SignUpRequest request);
     @POST("signin/")
     Call<LoginResponse> login(@Body LoginRequest request);
-    @POST("QuizGenerator/")
-    Call<QuizResponse> createQuiz(@Body QuizRequest payload);
+    @POST("ai/generate-quiz")
+    Call<GenerateQuizResponse> generateQuiz(
+            @Query("user_id") int userId,
+            @Body QuizGenerationRequest request
+    );
 
-    @GET("history/")
-    Call<List<ExamHistoryResponse>> getHistory(@Query("user_id") int userId);
+    @GET("exam/{exam_id}")
+    Call<ExamDetail> getExam(
+            @Path("exam_id") int examId,
+            @Query("user_id") int userId
+    );
+
+    @POST("exam/{exam_id}/grade")
+    Call<GradeResult> gradeExam(
+            @Path("exam_id") int examId,
+            @Query("user_id") int userId,
+            @Body GradeRequest request
+    );
+
+    @GET("history")
+    Call<java.util.List<HistoryItem>> getHistory(
+            @Query("user_id") int userId
+    );
 
 
 }

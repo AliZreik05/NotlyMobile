@@ -2,11 +2,16 @@ package com.example.notly;
 
 import java.util.List;
 
-public class QuizItem {
+public class ExamQuestionItem {
+
+    private int id;
     private String question;
     private List<String> options;
-    private int answer_index;
-    private String explanation;
+    private Integer order; // can be null
+
+    public int getId() {
+        return id;
+    }
 
     public String getQuestion() {
         return question;
@@ -16,11 +21,7 @@ public class QuizItem {
         return options;
     }
 
-    public int getAnswer_index() {
-        return answer_index;
-    }
-
-    public String getExplanation() {
-        return explanation;
+    public Integer getOrder() {
+        return order;
     }
 }

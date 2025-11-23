@@ -1,5 +1,6 @@
 package com.example.notly;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -36,47 +37,71 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void loadHistory() {
-        AuthApi api = RetrofitAPI.getClient().create(AuthApi.class);
+        AuthApi api = RetrofitAPI.getAuthApi();
 
         int userId = 1; // TODO: replace with real stored user id
 
-        api.getHistory(userId).enqueue(new Callback<List<ExamHistoryResponse>>() {
+        api.getHistory(userId).enqueue(new Callback<List<HistoryItem>>() {
             @Override
-            public void onResponse(Call<List<ExamHistoryResponse>> call,
-                                   Response<List<ExamHistoryResponse>> response) {
+            public void onResponse(Call<List<HistoryItem>> call,
+                                   Response<List<HistoryItem>> response) {
                 if (!response.isSuccessful() || response.body() == null) {
                     Toast.makeText(HistoryActivity.this,
                             "Failed to load history",
                             Toast.LENGTH_SHORT).show();
+                    try {
+                        if (response.errorBody() != null) {
+                            android.util.Log.e("HISTORY", "errorBody: " + response.errorBody().string());
+                        }
+                    } catch (Exception ignored) {}
                     return;
                 }
 
                 List<QuizHistory> list = new ArrayList<>();
 
-                for (ExamHistoryResponse e : response.body()) {
-                    String date = e.getCreated_at().substring(0, 10); // YYYY-MM-DD
+                for (HistoryItem e : response.body()) {
+
+                    String date = "";
+                    if (e.getCreated_at() != null && e.getCreated_at().length() >= 10) {
+                        date = e.getCreated_at().substring(0, 10); // YYYY-MM-DD
+                    }
+
                     String score = "Score: " + e.getGrade() + " / 10 • " + date;
 
+                    String title = e.getTitle() != null ? e.getTitle() : "Exam";
+                    String initial = title.isEmpty()
+                            ? "?"
+                            : title.substring(0, 1).toUpperCase();
+
                     list.add(new QuizHistory(
-                            e.getTitle(),
-                            e.getTitle().substring(0, 1).toUpperCase(), // avatar initial
+                            e.getId(),          // 👈 store backend id
+                            title,
+                            initial,
                             score,
-                            e.getGrade() >= 6 // passed if grade >= 6
+                            e.getGrade() >= 6
                     ));
+
                 }
 
                 QuizHistoryAdapter adapter = new QuizHistoryAdapter(list, quiz -> {
-                    // Later: open ExamResultActivity for this quiz (using quiz id if you add it)
+                    // Here quiz.getId() is HistoryItem.id (likely exam id)
+                    Intent intent = new Intent(HistoryActivity.this, ExamResultActivity.class);
+                    intent.putExtra("exam_id", quiz.getId());
+                    intent.putExtra("exam_title", quiz.getTitle());
+                    startActivity(intent);
                 });
+                historyRecyclerView.setAdapter(adapter);
+
                 historyRecyclerView.setAdapter(adapter);
             }
 
             @Override
-            public void onFailure(Call<List<ExamHistoryResponse>> call, Throwable t) {
+            public void onFailure(Call<List<HistoryItem>> call, Throwable t) {
                 Toast.makeText(HistoryActivity.this,
                         "Network error: " + t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }

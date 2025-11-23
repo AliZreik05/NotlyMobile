@@ -24,7 +24,8 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
 
-        authApi = RetrofitAPI.getClient().create(AuthApi.class);
+        AuthApi api = RetrofitAPI.getAuthApi();
+
 
         EditText firstNameEt      = findViewById(R.id.FirstName);
         EditText lastNameEt       = findViewById(R.id.LastName);
