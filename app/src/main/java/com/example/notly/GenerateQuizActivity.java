@@ -32,6 +32,8 @@ public class GenerateQuizActivity extends AppCompatActivity {
     private BottomNavigationView quizBottomNav;
 
     private AuthApi api;
+    private LectureAdapter lectureAdapter;
+    private ArrayList<Lecture> lectureList = new ArrayList<>();
 
     // TODO: replace with real logged-in user id
     private int userId = 1;
@@ -53,7 +55,8 @@ public class GenerateQuizActivity extends AppCompatActivity {
 
         lecturesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        lectureAdapter = new LectureAdapter(lectureList);
+        lecturesRecyclerView.setAdapter(lectureAdapter);
         loadLectures();
 
         // ---- bottom nav ----
@@ -65,16 +68,28 @@ public class GenerateQuizActivity extends AppCompatActivity {
     }
 
     private void onGenerateClicked() {
-        // For now we use the text typed in the search box as the quiz source.
-        // Later you can change this to use the selected lecture's content.
         String text = searchLectureEditText.getText().toString().trim();
+
+        // 🔹 If user didn’t type anything, use selected lectures
+        if (text.isEmpty()) {
+            // collect selected lectures
+            StringBuilder sb = new StringBuilder();
+            for (Lecture lecture : lectureAdapter.getLectures()) {
+                if (lecture.isSelected()) {
+                    if (sb.length() > 0) sb.append("\n\n");
+                    // For now we only have the title; later you can replace with full content
+                    sb.append(lecture.getTitle());
+                }
+            }
+            text = sb.toString().trim();
+        }
 
         if (text.isEmpty()) {
             Toast.makeText(this, "Enter or select some text first", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int numQuestions = 10;  // fixed for now; you can change later
+        int numQuestions = 10;  // fixed for now
 
         QuizGenerationRequest request = new QuizGenerationRequest(text, numQuestions);
 
@@ -96,16 +111,28 @@ public class GenerateQuizActivity extends AppCompatActivity {
                 GenerateQuizResponse body = response.body();
 
                 int examId = body.getExamId();
-                ArrayList<QuizQuestion> questions =
-                        new ArrayList<>(body.getQuestions());
 
-                // Go to ExamActivity with exam id + questions
+                // 🔹 Convert backend QuizQuestion -> UI ExamQuestion
+                ArrayList<ExamQuestion> examQuestions = new ArrayList<>();
+                int index = 1;
+                for (QuizQuestion q : body.getQuestions()) {
+                    ExamQuestion eq = new ExamQuestion(
+                            "Question " + index++,     // title
+                            q.getQuestion(),           // description text
+                            q.getOptions(),            // options
+                            q.getCorrectIndex()        // correctOptionIndex
+                    );
+                    examQuestions.add(eq);
+                }
+
+                // 🔹 Start ExamActivity with what it EXPECTS
                 Intent intent = new Intent(GenerateQuizActivity.this, ExamActivity.class);
                 intent.putExtra("exam_id", examId);
                 intent.putExtra("exam_title", body.getTitle());
-                intent.putExtra("questions", questions);  // QuizQuestion implements Serializable
+                intent.putExtra("exam_questions", examQuestions);  // ✅ correct key + type
                 startActivity(intent);
             }
+
 
             @Override
             public void onFailure(Call<GenerateQuizResponse> call, Throwable t) {
@@ -116,6 +143,7 @@ public class GenerateQuizActivity extends AppCompatActivity {
             }
         });
     }
+
     private void loadLectures() {
         api.getLectures(userId).enqueue(new Callback<List<LectureResponse>>() {
             @Override
@@ -128,15 +156,11 @@ public class GenerateQuizActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Convert backend → UI model
-                ArrayList<Lecture> lectureList = new ArrayList<>();
-
+                lectureList.clear();
                 for (LectureResponse r : response.body()) {
                     lectureList.add(new Lecture(r.getId(), r.getTitle()));
                 }
-
-                LectureAdapter adapter = new LectureAdapter(lectureList);
-                lecturesRecyclerView.setAdapter(adapter);
+                lectureAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -147,6 +171,7 @@ public class GenerateQuizActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 }

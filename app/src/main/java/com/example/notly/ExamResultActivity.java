@@ -1,54 +1,81 @@
-package com.example.notly; // use your package
+package com.example.notly;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ExamResultActivity extends AppCompatActivity {
 
     private RecyclerView resultsRecyclerView;
-    private LinearLayout returnBar;
+    private ResultQuestionAdapter adapter;
     private TextView scoreObtainedTextView;
     private TextView scoreTotalTextView;
+    private LinearLayout returnBar;
 
-    private ExamResultQuestionAdapter adapter;
+    private AuthApi api;
+    private int userId = 1;  // TODO: replace with real logged-in user id if needed
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exam_result_activity);
 
+        api = RetrofitAPI.getAuthApi();
+
+        // Match your XML ids
         resultsRecyclerView = findViewById(R.id.resultsRecyclerView);
-        returnBar = findViewById(R.id.returnBar);
         scoreObtainedTextView = findViewById(R.id.scoreObtainedTextView);
         scoreTotalTextView = findViewById(R.id.scoreTotalTextView);
+        returnBar = findViewById(R.id.returnBar);
 
         resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-// Get data from Intent
-        List<ExamResultQuestion> questions =
-                (List<ExamResultQuestion>) getIntent().getSerializableExtra("result_questions");
+        // Tap on "Return to home" -> close screen
+        returnBar.setOnClickListener(v -> finish());
 
-        if (questions == null || questions.isEmpty()) {
-            questions = buildDummyResults(); // optional fallback or remove
+        int examId = getIntent().getIntExtra("exam_id", -1);
+
+        @SuppressWarnings("unchecked")
+        ArrayList<ExamResultQuestion> localResult =
+                (ArrayList<ExamResultQuestion>)
+                        getIntent().getSerializableExtra("result_questions");
+
+        // 1) If we got local result directly (freshly graded), use it
+        if (localResult != null && !localResult.isEmpty()) {
+            showResult(localResult);
         }
+        // 2) Otherwise, if we at least know the examId, load from backend
+        else if (examId != -1) {
+            loadResultFromBackend(examId);
+        }
+        // 3) Only then give up
+        else {
+            Toast.makeText(this, "No result data", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
-        adapter = new ExamResultQuestionAdapter(questions);
-        resultsRecyclerView.setAdapter(adapter);
-
-// compute score
+    /**
+     * Common function to display result in the UI.
+     */
+    private void showResult(List<ExamResultQuestion> questions) {
         int total = questions.size();
         int correct = 0;
+
         for (ExamResultQuestion q : questions) {
             if (q.getSelectedIndex() == q.getCorrectIndex()) {
                 correct++;
@@ -58,40 +85,105 @@ public class ExamResultActivity extends AppCompatActivity {
         scoreObtainedTextView.setText(String.valueOf(correct));
         scoreTotalTextView.setText(String.valueOf(total));
 
-        returnBar.setOnClickListener(v -> {
-            finish();
-            // or open HomeActivity if you prefer
-        });
-
+        adapter = new ResultQuestionAdapter(questions);
+        resultsRecyclerView.setAdapter(adapter);
     }
 
-    private List<ExamResultQuestion> buildDummyResults() {
-        List<ExamResultQuestion> list = new ArrayList<>();
+    /**
+     * Called when we open from History OR when localResult was missing.
+     * 1) Fetch exam with questions (/exam/{id})
+     * 2) Fetch stored result (/exam/{id}/result)
+     * 3) Merge both into ExamResultQuestion list and call showResult()
+     */
+    private void loadResultFromBackend(int examId) {
+        // 1) Fetch exam with questions
+        api.getExam(examId).enqueue(new Callback<ExamDetail>() {
+            @Override
+            public void onResponse(Call<ExamDetail> call, Response<ExamDetail> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    Toast.makeText(ExamResultActivity.this,
+                            "Failed to load exam", Toast.LENGTH_SHORT).show();
+                    try {
+                        if (response.errorBody() != null) {
+                            android.util.Log.e("EXAM", "errorBody: " + response.errorBody().string());
+                        }
+                    } catch (Exception ignored) {}
+                    finish();
+                    return;
+                }
 
-        list.add(new ExamResultQuestion(
-                "Question 1",
-                "Question description",
-                Arrays.asList("Option A", "Option B", "Option C"),
-                0,  // correct: A
-                0   // user chose A (green)
-        ));
+                ExamDetail exam = response.body();
+                List<ExamQuestionItem> questionItems = exam.getQuestions();
 
-        list.add(new ExamResultQuestion(
-                "Question 2",
-                "Question description",
-                Arrays.asList("Choice 1", "Choice 2", "Choice 3"),
-                2,  // correct: 3
-                0   // user chose 1 (red, 3 will be green)
-        ));
+                Map<Integer, ExamQuestionItem> questionMap = new HashMap<>();
+                for (ExamQuestionItem q : questionItems) {
+                    questionMap.put(q.getId(), q);
+                }
 
-        list.add(new ExamResultQuestion(
-                "Question 3",
-                "Question description",
-                Arrays.asList("Answer 1", "Answer 2", "Answer 3"),
-                1,  // correct: 2
-                1   // user chose 2 (green)
-        ));
+                // 2) Fetch stored result
+                api.getExamResult(examId).enqueue(new Callback<GradeResultDto>() {
+                    @Override
+                    public void onResponse(Call<GradeResultDto> call,
+                                           Response<GradeResultDto> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Toast.makeText(ExamResultActivity.this,
+                                    "Failed to load result", Toast.LENGTH_SHORT).show();
+                            try {
+                                if (response.errorBody() != null) {
+                                    android.util.Log.e("EXAM_RES", "errorBody: " + response.errorBody().string());
+                                }
+                            } catch (Exception ignored) {}
+                            finish();
+                            return;
+                        }
 
-        return list;
+                        GradeResultDto resultDto = response.body();
+
+                        int correct = resultDto.getCorrect();
+                        int total = resultDto.getTotalQuestions();
+                        scoreObtainedTextView.setText(String.valueOf(correct));
+                        scoreTotalTextView.setText(String.valueOf(total));
+
+                        ArrayList<ExamResultQuestion> uiList = new ArrayList<>();
+
+                        for (QuestionResultDto d : resultDto.getDetails()) {
+                            ExamQuestionItem qi = questionMap.get(d.getQuestionId());
+                            if (qi == null) continue;
+
+                            uiList.add(new ExamResultQuestion(
+                                    // title
+                                    "Question " + (qi.getOrder() != null
+                                            ? qi.getOrder()
+                                            : uiList.size() + 1),
+                                    // description
+                                    qi.getQuestion(),
+                                    // options
+                                    qi.getOptions(),
+                                    // correct index
+                                    d.getCorrectIndex(),
+                                    // selected index (may be null)
+                                    d.getUserIndex() != null ? d.getUserIndex() : -1
+                            ));
+                        }
+
+                        showResult(uiList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<GradeResultDto> call, Throwable t) {
+                        Toast.makeText(ExamResultActivity.this,
+                                "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ExamDetail> call, Throwable t) {
+                Toast.makeText(ExamResultActivity.this,
+                        "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 }

@@ -84,12 +84,13 @@ public class HistoryActivity extends AppCompatActivity {
                 }
 
                 QuizHistoryAdapter adapter = new QuizHistoryAdapter(list, quiz -> {
-                    // Here quiz.getId() is HistoryItem.id (likely exam id)
                     Intent intent = new Intent(HistoryActivity.this, ExamResultActivity.class);
                     intent.putExtra("exam_id", quiz.getId());
                     intent.putExtra("exam_title", quiz.getTitle());
+                    intent.putExtra("from_history", true);
                     startActivity(intent);
                 });
+
                 historyRecyclerView.setAdapter(adapter);
 
                 historyRecyclerView.setAdapter(adapter);

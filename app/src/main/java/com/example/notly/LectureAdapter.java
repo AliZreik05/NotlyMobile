@@ -18,6 +18,9 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.LectureV
     public LectureAdapter(List<Lecture> lectures) {
         this.lectures = lectures;
     }
+    public List<Lecture> getLectures() {
+        return lectures;
+    }
 
     @NonNull
     @Override

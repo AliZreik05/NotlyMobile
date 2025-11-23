@@ -26,9 +26,9 @@ public interface AuthApi {
 
     @GET("exam/{exam_id}")
     Call<ExamDetail> getExam(
-            @Path("exam_id") int examId,
-            @Query("user_id") int userId
+            @Path("exam_id") int examId
     );
+
 
     @POST("exam/{exam_id}/grade")
     Call<GradeResult> gradeExam(
@@ -42,5 +42,16 @@ public interface AuthApi {
             @Query("user_id") int userId
     );
 
+    @GET("exam/{exam_id}/result")
+    Call<GradeResultDto> getExamResult(
+            @Path("exam_id") int examId
+    );
+
+    @POST("exam/{exam_id}/grade")
+    Call<GradeResultDto> gradeExam(
+            @Path("exam_id") int examId,
+            @Query("user_id") int userId,
+            @Body GradeRequestDto request
+    );
 
 }

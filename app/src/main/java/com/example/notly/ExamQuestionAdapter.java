@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExamQuestionAdapter extends RecyclerView.Adapter<ExamQuestionAdapter.QuestionViewHolder> {
 
@@ -110,4 +112,17 @@ public class ExamQuestionAdapter extends RecyclerView.Adapter<ExamQuestionAdapte
     public List<ExamQuestion> getQuestions() {
         return questions;
     }
+
+    public Map<Integer, Integer> getSelectedAnswers() {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (ExamQuestion q : questions) {
+            if (q.getSelectedOptionIndex() != -1) {   // only answered ones
+                map.put(q.getId(), q.getSelectedOptionIndex());
+            }
+        }
+        return map;
+    }
 }
+
+
+
