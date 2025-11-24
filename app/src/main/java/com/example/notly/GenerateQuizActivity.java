@@ -35,13 +35,16 @@ public class GenerateQuizActivity extends AppCompatActivity {
     private LectureAdapter lectureAdapter;
     private ArrayList<Lecture> lectureList = new ArrayList<>();
 
-    // TODO: replace with real logged-in user id
-    private int userId = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generate_quiz_activity);
+        int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
+                .getInt("user_id", -1);
+        Toast.makeText(GenerateQuizActivity.this,
+                String.valueOf(userId), Toast.LENGTH_SHORT).show();
 
         // ---- find views according to your XML ----
         searchLectureEditText = findViewById(R.id.searchLectureEditText);
@@ -95,7 +98,8 @@ public class GenerateQuizActivity extends AppCompatActivity {
 
         generateQuizBar.setEnabled(false);
         generateQuizText.setText("Generating...");
-
+        int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
+                .getInt("user_id", -1);
         api.generateQuiz(userId, request).enqueue(new Callback<GenerateQuizResponse>() {
             @Override
             public void onResponse(Call<GenerateQuizResponse> call, Response<GenerateQuizResponse> response) {
@@ -147,6 +151,8 @@ public class GenerateQuizActivity extends AppCompatActivity {
     }
 
     private void loadLectures() {
+        int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
+                .getInt("user_id", -1);
         api.getLectures(userId).enqueue(new Callback<List<LectureResponse>>() {
             @Override
             public void onResponse(Call<List<LectureResponse>> call,

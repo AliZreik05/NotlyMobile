@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                                 .edit()
                                 .putString("access_token", token.getAccessToken())
                                 .putString("token_type", token.getTokenType())
+                                .putInt("user_id", token.getUserId())   // <-- SAVE USER ID
                                 .apply();
 
                         Toast.makeText(LoginActivity.this,

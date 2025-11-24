@@ -28,12 +28,15 @@ public class ExamResultActivity extends AppCompatActivity {
     private LinearLayout returnBar;
 
     private AuthApi api;
-    private int userId = 1;  // TODO: replace with real logged-in user id if needed
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exam_result_activity);
+        int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
+                .getInt("user_id", -1);
 
         api = RetrofitAPI.getAuthApi();
 

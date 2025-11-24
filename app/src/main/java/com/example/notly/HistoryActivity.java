@@ -39,7 +39,9 @@ public class HistoryActivity extends AppCompatActivity {
     private void loadHistory() {
         AuthApi api = RetrofitAPI.getAuthApi();
 
-        int userId = 1; // TODO: replace with real stored user id
+        int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
+                .getInt("user_id", -1);
+
 
         api.getHistory(userId).enqueue(new Callback<List<HistoryItem>>() {
             @Override

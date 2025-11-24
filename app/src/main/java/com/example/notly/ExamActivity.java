@@ -26,12 +26,16 @@
         private List<ExamQuestion> questions;
 
         private AuthApi api;
-        private int userId = 1;
+
+
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.exam_activity);
+
+            int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
+                    .getInt("user_id", -1);
 
             api = RetrofitAPI.getAuthApi();
 
@@ -51,6 +55,8 @@
         }
 
         private void submitExam() {
+            int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
+                    .getInt("user_id", -1);
             int examId = getIntent().getIntExtra("exam_id", -1);
 
             Map<Integer, Integer> answersMap = adapter.getSelectedAnswers();
