@@ -13,7 +13,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
-
+        TopBarUtils.setupTopBar(this);
         View cardSummarizer = findViewById(R.id.cardSummarizer);
         View cardQuiz = findViewById(R.id.cardQuiz);
         View cardFlashcards = findViewById(R.id.cardFlashcards);

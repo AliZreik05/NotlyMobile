@@ -41,10 +41,9 @@ public class GenerateQuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generate_quiz_activity);
+        TopBarUtils.setupTopBar(this);
         int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
                 .getInt("user_id", -1);
-        Toast.makeText(GenerateQuizActivity.this,
-                String.valueOf(userId), Toast.LENGTH_SHORT).show();
 
         // ---- find views according to your XML ----
         searchLectureEditText = findViewById(R.id.searchLectureEditText);

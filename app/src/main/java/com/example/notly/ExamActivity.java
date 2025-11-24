@@ -33,7 +33,7 @@
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.exam_activity);
-
+            TopBarUtils.setupTopBar(this);
             int userId = getSharedPreferences("notly_prefs", MODE_PRIVATE)
                     .getInt("user_id", -1);
 
