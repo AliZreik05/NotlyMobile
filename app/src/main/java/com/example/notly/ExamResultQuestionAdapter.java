@@ -1,4 +1,4 @@
-package com.example.notly; // use your package
+package com.example.notly;
 
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -56,39 +56,47 @@ public class ExamResultQuestionAdapter extends RecyclerView.Adapter<ExamResultQu
                 holder.option3TextView
         };
 
-        int correctBg = holder.itemView.getResources().getColor(R.color.resultCorrectBg);
-        int correctText = holder.itemView.getResources().getColor(R.color.resultCorrectText);
+        // safety: if indexes are out of range, ignore them
+        if (correctIndex < 0 || correctIndex >= optionsViews.length) {
+            correctIndex = -1;
+        }
+        if (selectedIndex < 0 || selectedIndex >= optionsViews.length) {
+            selectedIndex = -1;
+        }
 
-        int wrongBg = holder.itemView.getResources().getColor(R.color.resultWrongBg);
-        int wrongText = holder.itemView.getResources().getColor(R.color.resultWrongText);
+        int correctBg = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultCorrectBg);
+        int correctText = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultCorrectText);
 
-        int neutralBg = holder.itemView.getResources().getColor(R.color.resultOptionNeutralBg);
-        int neutralText = holder.itemView.getResources().getColor(R.color.resultOptionNeutralText);
+        int wrongBg = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultWrongBg);
+        int wrongText = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultWrongText);
+
+        int neutralBg = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultOptionNeutralBg);
+        int neutralText = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultOptionNeutralText);
 
         for (int i = 0; i < optionsViews.length; i++) {
             TextView tv = optionsViews[i];
+            if (tv == null) continue;
 
             // default neutral
             tv.setBackgroundColor(neutralBg);
             tv.setTextColor(neutralText);
             tv.setTypeface(null, Typeface.NORMAL);
 
+            // correct answer
             if (i == correctIndex) {
-                // correct answer
                 tv.setBackgroundColor(correctBg);
                 tv.setTextColor(correctText);
                 tv.setTypeface(null, Typeface.BOLD);
             }
 
+            // wrong selected answer
             if (selectedIndex != -1 && i == selectedIndex && selectedIndex != correctIndex) {
-                // wrong selected answer
                 tv.setBackgroundColor(wrongBg);
                 tv.setTextColor(wrongText);
                 tv.setTypeface(null, Typeface.BOLD);
             }
         }
     }
-
 
     static class ResultViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;

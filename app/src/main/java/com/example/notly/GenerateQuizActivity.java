@@ -78,7 +78,7 @@ public class GenerateQuizActivity extends AppCompatActivity {
                 if (lecture.isSelected()) {
                     if (sb.length() > 0) sb.append("\n\n");
                     // For now we only have the title; later you can replace with full content
-                    sb.append(lecture.getTitle());
+                    sb.append(lecture.getContent());
                 }
             }
             text = sb.toString().trim();
@@ -158,7 +158,12 @@ public class GenerateQuizActivity extends AppCompatActivity {
 
                 lectureList.clear();
                 for (LectureResponse r : response.body()) {
-                    lectureList.add(new Lecture(r.getId(), r.getTitle()));
+                    lectureList.add(new Lecture(
+                            r.getId(),
+                            r.getTitle(),
+                            r.getContent()
+                    ));
+
                 }
                 lectureAdapter.notifyDataSetChanged();
             }
