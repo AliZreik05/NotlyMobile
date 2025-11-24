@@ -1,5 +1,6 @@
 package com.example.notly;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,42 +40,61 @@ public class ResultQuestionAdapter extends RecyclerView.Adapter<ResultQuestionAd
         holder.option2TextView.setText(opts.size() > 1 ? opts.get(1) : "");
         holder.option3TextView.setText(opts.size() > 2 ? opts.get(2) : "");
 
-        // simple correct/wrong highlight
-        TextView[] optionViews = {
-                holder.option1TextView,
-                holder.option2TextView,
-                holder.option3TextView
-        };
-
-        int correct = q.getCorrectIndex();
-        int selected = q.getSelectedIndex();
-
-        for (int i = 0; i < optionViews.length; i++) {
-            TextView tv = optionViews[i];
-            tv.setBackgroundColor(0x00000000); // clear
-            tv.setTextColor(ContextCompat.getColor(tv.getContext(), android.R.color.black));
-
-            if (i == correct) {
-                // green for correct
-                tv.setBackgroundColor(
-                        ContextCompat.getColor(tv.getContext(), R.color.resultCorrectText));
-                tv.setTextColor(
-                        ContextCompat.getColor(tv.getContext(), R.color.resultCorrectText));
-            }
-
-            if (selected != -1 && i == selected && selected != correct) {
-                // red for wrong selection
-                tv.setBackgroundColor(
-                        ContextCompat.getColor(tv.getContext(), R.color.resultCorrectBg));
-                tv.setTextColor(
-                        ContextCompat.getColor(tv.getContext(), R.color.resultWrongBg));
-            }
-        }
+        applyColors(holder, q.getCorrectIndex(), q.getSelectedIndex());
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    private void applyColors(ViewHolder holder, int correctIndex, int selectedIndex) {
+        TextView[] optionsViews = {
+                holder.option1TextView,
+                holder.option2TextView,
+                holder.option3TextView
+        };
+
+        // safety: if indexes are out of range, ignore them
+        if (correctIndex < 0 || correctIndex >= optionsViews.length) {
+            correctIndex = -1;
+        }
+        if (selectedIndex < 0 || selectedIndex >= optionsViews.length) {
+            selectedIndex = -1;
+        }
+
+        int correctBg = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultCorrectBg);
+        int correctText = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultCorrectText);
+
+        int wrongBg = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultWrongBg);
+        int wrongText = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultWrongText);
+
+        int neutralBg = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultOptionNeutralBg);
+        int neutralText = ContextCompat.getColor(holder.itemView.getContext(), R.color.resultOptionNeutralText);
+
+        for (int i = 0; i < optionsViews.length; i++) {
+            TextView tv = optionsViews[i];
+            if (tv == null) continue;
+
+            // reset to neutral
+            tv.setBackgroundColor(neutralBg);
+            tv.setTextColor(neutralText);
+            tv.setTypeface(null, Typeface.NORMAL);
+
+            // correct answer
+            if (i == correctIndex) {
+                tv.setBackgroundColor(correctBg);
+                tv.setTextColor(correctText);
+                tv.setTypeface(null, Typeface.BOLD);
+            }
+
+            // wrong selected answer
+            if (selectedIndex != -1 && i == selectedIndex && selectedIndex != correctIndex) {
+                tv.setBackgroundColor(wrongBg);
+                tv.setTextColor(wrongText);
+                tv.setTypeface(null, Typeface.BOLD);
+            }
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,7 +106,6 @@ public class ResultQuestionAdapter extends RecyclerView.Adapter<ResultQuestionAd
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // ⚠️ Make sure these IDs match exam_result_question.xml
             titleTextView = itemView.findViewById(R.id.resultQuestionTitleTextView);
             descriptionTextView = itemView.findViewById(R.id.resultQuestionDescriptionTextView);
             option1TextView = itemView.findViewById(R.id.resultOption1TextView);

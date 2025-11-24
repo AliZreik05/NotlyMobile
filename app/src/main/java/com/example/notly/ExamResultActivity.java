@@ -1,4 +1,5 @@
 package com.example.notly;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -41,6 +42,9 @@ public class ExamResultActivity extends AppCompatActivity {
         scoreObtainedTextView = findViewById(R.id.scoreObtainedTextView);
         scoreTotalTextView = findViewById(R.id.scoreTotalTextView);
         returnBar = findViewById(R.id.returnBar);
+        BottomNavigationView quizBottomNav = findViewById(R.id.quizBottomNav);
+        QuizNavUtils.setupQuizBottomNav(quizBottomNav, this, R.id.nav_quiz_history);
+
 
         resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

@@ -117,13 +117,15 @@ public class GenerateQuizActivity extends AppCompatActivity {
                 int index = 1;
                 for (QuizQuestion q : body.getQuestions()) {
                     ExamQuestion eq = new ExamQuestion(
+                            q.getId(),                 // ✅ REAL DB ID
                             "Question " + index++,     // title
-                            q.getQuestion(),           // description text
+                            q.getQuestion(),           // description
                             q.getOptions(),            // options
                             q.getCorrectIndex()        // correctOptionIndex
                     );
                     examQuestions.add(eq);
                 }
+
 
                 // 🔹 Start ExamActivity with what it EXPECTS
                 Intent intent = new Intent(GenerateQuizActivity.this, ExamActivity.class);

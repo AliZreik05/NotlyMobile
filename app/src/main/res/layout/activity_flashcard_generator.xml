@@ -48,11 +48,11 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/profileIcon"
+            android:id="@+id/homeIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_profile_circle"
-            android:contentDescription="@string/profile" />
+            android:src="@drawable/ic_home"
+            android:contentDescription="@string/home" />
     </LinearLayout>
 
     <!-- SCROLLABLE CONTENT BETWEEN TOPBAR AND BOTTOMSECTION -->
