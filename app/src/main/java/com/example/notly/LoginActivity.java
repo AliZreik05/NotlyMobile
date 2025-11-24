@@ -2,6 +2,7 @@ package com.example.notly;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,21 +22,30 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);  // make sure this matches your XML file name
+
+        // 1) Auto-login if remembered
+        if (SessionManager.shouldRemember(this)
+                && SessionManager.getUserId(this) != -1) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
+
+        setContentView(R.layout.login_activity);
 
         authApi = RetrofitAPI.getAuthApi();
-
 
         EditText emailEt    = findViewById(R.id.Email);
         EditText passwordEt = findViewById(R.id.Password);
         TextView loginBtn   = findViewById(R.id.btnLogin);
-        //TextView goToSignUp = findViewById(R.id.GoToSignUp);  if you have it
+        TextView goToSignUp = findViewById(R.id.GoToSignUp);
+        CheckBox rememberCb = findViewById(R.id.rememberMeCheckBox);
 
         // Go to Sign Up
-        //if (goToSignUp != null) {
-            //goToSignUp.setOnClickListener(v ->
-                   // startActivity(new Intent(LoginActivity.this, SignUpActivity.class)));
-        //}
+        if (goToSignUp != null) {
+            goToSignUp.setOnClickListener(v ->
+                    startActivity(new Intent(LoginActivity.this, SignUpActivity.class)));
+        }
 
         // Login click
         loginBtn.setOnClickListener(v -> {
@@ -55,19 +65,24 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         LoginResponse token = response.body();
 
-                        // Save token
+                        // ⚠ Make sure LoginResponse has a userId field + getter
+                        int userId = token.getUserId();
+
+                        // Save token (optional, as you had) - still local
                         getSharedPreferences("notly_prefs", MODE_PRIVATE)
                                 .edit()
                                 .putString("access_token", token.getAccessToken())
                                 .putString("token_type", token.getTokenType())
-                                .putInt("user_id", token.getUserId())   // <-- SAVE USER ID
                                 .apply();
+
+                        // Save session info for this device
+                        SessionManager.saveUserId(LoginActivity.this, userId);
+                        SessionManager.setRememberMe(LoginActivity.this, rememberCb.isChecked());
 
                         Toast.makeText(LoginActivity.this,
                                 "Logged in successfully",
                                 Toast.LENGTH_SHORT).show();
 
-                        // Go to home (or Notes/Quiz etc.)
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                         finish();
                     } else {

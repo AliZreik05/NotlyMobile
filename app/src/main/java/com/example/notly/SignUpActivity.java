@@ -2,7 +2,6 @@ package com.example.notly;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,30 +23,33 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
 
-        AuthApi api = RetrofitAPI.getAuthApi();
+        if (SessionManager.shouldRemember(this)
+                && SessionManager.getUserId(this) != -1) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
 
+        authApi = RetrofitAPI.getAuthApi();
 
-        EditText firstNameEt      = findViewById(R.id.FirstName);
-        EditText lastNameEt       = findViewById(R.id.LastName);
-        EditText emailEt          = findViewById(R.id.Email);
-        EditText passwordEt       = findViewById(R.id.Password);
-        EditText confirmPassEt    = findViewById(R.id.ConfirmPassword);
-        CheckBox rememberMeCb     = findViewById(R.id.checkRememberMe);
-        TextView signUpBtn        = findViewById(R.id.btnSignUp);
-        TextView goToLoginBtn     = findViewById(R.id.GoToLogin);
+        EditText firstNameEt   = findViewById(R.id.FirstName);
+        EditText lastNameEt    = findViewById(R.id.LastName);
+        EditText emailEt       = findViewById(R.id.Email);
+        EditText passwordEt    = findViewById(R.id.Password);
+        EditText confirmPassEt = findViewById(R.id.ConfirmPassword);
+        TextView signUpBtn     = findViewById(R.id.btnSignUp);
+        TextView goToLoginBtn  = findViewById(R.id.GoToLogin);
 
-        goToLoginBtn.setOnClickListener(v -> {
-            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-        });
+        goToLoginBtn.setOnClickListener(v ->
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class)));
 
         signUpBtn.setOnClickListener(v -> {
 
-            String firstName   = firstNameEt.getText().toString().trim();
-            String lastName    = lastNameEt.getText().toString().trim();
-            String email       = emailEt.getText().toString().trim();
-            String password    = passwordEt.getText().toString();
-            String verifyPass  = confirmPassEt.getText().toString();
-            boolean rememberMe = rememberMeCb.isChecked();
+            String firstName  = firstNameEt.getText().toString().trim();
+            String lastName   = lastNameEt.getText().toString().trim();
+            String email      = emailEt.getText().toString().trim();
+            String password   = passwordEt.getText().toString();
+            String verifyPass = confirmPassEt.getText().toString();
 
             if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
                     || password.isEmpty() || verifyPass.isEmpty()) {
@@ -65,8 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
                     lastName,
                     email,
                     password,
-                    verifyPass,
-                    rememberMe
+                    verifyPass
             );
 
             authApi.signUp(req).enqueue(new Callback<SignUpResponse>() {
@@ -89,14 +90,12 @@ public class SignUpActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        // Build a safe fallback message
                         String msg = "Sign up failed (code " + response.code() + ")";
                         if (raw != null && !raw.trim().isEmpty()) {
-                            msg = raw;   // TEMP: show raw backend JSON
+                            msg = raw;
                         }
 
                         android.util.Log.e("SIGNUP", "code=" + response.code() + " raw=" + raw);
-
                         Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_LONG).show();
                     }
                 }

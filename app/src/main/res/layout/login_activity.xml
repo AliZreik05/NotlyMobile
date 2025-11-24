@@ -76,7 +76,7 @@
             android:textColorHint="#80000000" />
 
         <CheckBox
-            android:id="@+id/checkRememberMe"
+            android:id="@+id/rememberMeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -116,7 +116,7 @@
             android:layout_gravity="center_horizontal" />
 
         <TextView
-            android:id="@+id/tvGoToSignUp"
+            android:id="@+id/GoToSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

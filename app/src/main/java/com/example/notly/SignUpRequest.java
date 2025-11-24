@@ -10,12 +10,12 @@ public class SignUpRequest {
     private boolean rememberMe;
 
     public SignUpRequest(String firstName, String lastName, String email,
-                         String password, String verifyPassword, boolean rememberMe) {
+                         String password, String verifyPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.verifyPassword = verifyPassword;
-        this.rememberMe = rememberMe;
+        this.rememberMe = false;
     }
 }
