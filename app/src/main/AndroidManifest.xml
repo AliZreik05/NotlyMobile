@@ -32,7 +32,7 @@
         <activity android:name=".NotesListActivity"/>
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".LoginActivity"/>
-
+        <activity android:name=".ResetPasswordActivity"/>
 
     </application>
 

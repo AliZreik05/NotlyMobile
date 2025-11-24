@@ -29,6 +29,13 @@ public class SignUpActivity extends AppCompatActivity {
             finish();
             return;
         }
+        TextView forgotPassword = findViewById(R.id.tvForgotPassword);
+        if (forgotPassword != null) {
+            forgotPassword.setOnClickListener(v ->
+                    startActivity(new Intent(SignUpActivity.this, ResetPasswordActivity.class))
+            );
+        }
+
 
         authApi = RetrofitAPI.getAuthApi();
 

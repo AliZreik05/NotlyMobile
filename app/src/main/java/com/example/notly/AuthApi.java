@@ -54,4 +54,9 @@ public interface AuthApi {
             @Body GradeRequestDto request
     );
 
+    @POST("reset-password/")
+    Call<GenericResponse> resetPassword(@Body ResetPasswordRequest request);
+
+
+
 }

@@ -46,6 +46,13 @@ public class LoginActivity extends AppCompatActivity {
             goToSignUp.setOnClickListener(v ->
                     startActivity(new Intent(LoginActivity.this, SignUpActivity.class)));
         }
+        TextView forgotPassword = findViewById(R.id.tvForgotPassword);
+        if (forgotPassword != null) {
+            forgotPassword.setOnClickListener(v ->
+                    startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class))
+            );
+        }
+
 
         // Login click
         loginBtn.setOnClickListener(v -> {
