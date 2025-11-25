@@ -32,7 +32,7 @@ public class ExamResultQuestionAdapter extends RecyclerView.Adapter<ExamResultQu
     public void onBindViewHolder(@NonNull ResultViewHolder holder, int position) {
         ExamResultQuestion q = questions.get(position);
 
-        holder.titleTextView.setText(q.getTitle());
+        holder.titleTextView.setText("Question " + (position + 1));
         holder.descriptionTextView.setText(q.getDescription());
 
         List<String> opts = q.getOptions();
