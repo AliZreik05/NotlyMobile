@@ -3,9 +3,10 @@ package com.example.notly;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.lecturetranscriber.LectureTranscriberActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         cardFlashcards.setOnClickListener(v ->
                 startActivity(new Intent(this, FlashcardGeneratorActivity.class))); // stub for now
 
-        //cardTranscriber.setOnClickListener(v ->
-         //       startActivity(new Intent(this, TranscriberActivity.class))); // stub for now
+        cardTranscriber.setOnClickListener(v ->
+                startActivity(new Intent(this, LectureTranscriberActivity.class)));
     }
 }

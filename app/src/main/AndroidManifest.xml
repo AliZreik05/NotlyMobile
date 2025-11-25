@@ -33,6 +33,11 @@
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".LoginActivity"/>
         <activity android:name=".ResetPasswordActivity"/>
+        <activity
+            android:name="com.example.lecturetranscriber.LectureTranscriberActivity"
+            android:exported="false"
+            android:label="@string/lecture_transcriber_title"
+            android:theme="@style/Theme.LectureTranscriber" />
 
     </application>
 

@@ -3,4 +3,5 @@
     <string name="profile">Profile</string>
     <string name="menu">Menu</string>
     <string name="home">Home</string>
+    <string name="lecture_transcriber_title">Lecture Transcriber</string>
 </resources>
