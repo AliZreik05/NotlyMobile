@@ -3,5 +3,23 @@
     <string name="profile">Profile</string>
     <string name="menu">Menu</string>
     <string name="home">Home</string>
+    <string name="home_subtitle_notly">Choose a feature to start studying smarter.</string>
+
     <string name="lecture_transcriber_title">Lecture Transcriber</string>
+    <string name="home_title_notly">Welcome to Notly</string>
+    <string name="home_subtitle">Choose a feature to start studying smarter.</string>
+
+    <string name="feature_notes_summarizer_title">Notes Summarizer</string>
+    <string name="feature_notes_summarizer_desc">Paste notes or upload a file to get a clean summary.</string>
+
+    <string name="feature_quiz_generator_title">Quiz Generator</string>
+    <string name="feature_quiz_generator_desc">Select lectures and let Notly build an exam.</string>
+
+    <string name="feature_flashcards_title">Flashcard Generator</string>
+    <string name="feature_flashcards_desc">Turn your notes into active recall cards.</string>
+
+    <string name="feature_transcriber_title">Lecture Transcriber</string>
+    <string name="feature_transcriber_desc">Upload or record audio and get text + smart notes.</string>
+
+
 </resources>

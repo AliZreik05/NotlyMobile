@@ -1,0 +1,29 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Back card -->
+    <path
+        android:fillColor="#33000000"
+        android:pathData="M6,5h12v11h-12z" />
+
+    <!-- Front card -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M4,8h12v11h-12z" />
+
+    <!-- Title line -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M6,10h8v1.4H6z" />
+
+    <!-- Body lines -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M6,13h7v1.4H6z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M6,16h5v1.4H6z" />
+</vector>
