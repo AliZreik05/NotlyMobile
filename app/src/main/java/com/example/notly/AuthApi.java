@@ -23,6 +23,11 @@ public interface AuthApi {
             @Query("user_id") int userId,
             @Body QuizGenerationRequest request
     );
+    @POST("ai/generate-flashcards")
+    Call<FlashcardGenerationResponse> generateFlashcards(
+            @Query("user_id") int userId,
+            @Body FlashcardGenerationRequest request
+    );
 
     @GET("exam/{exam_id}")
     Call<ExamDetail> getExam(

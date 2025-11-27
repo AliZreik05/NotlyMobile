@@ -199,6 +199,28 @@
                     android:background="@drawable/rounded_button"
                     android:layout_marginTop="16dp" />
 
+                <!-- Results title -->
+                <TextView
+                    android:id="@+id/tvFlashResultTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Generated flashcards"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:paddingTop="20dp"
+                    android:visibility="gone" />
+
+                <!-- Container for generated flashcards -->
+                <LinearLayout
+                    android:id="@+id/flashcardListContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
         </LinearLayout>
